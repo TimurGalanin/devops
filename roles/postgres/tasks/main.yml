@@ -9,9 +9,9 @@
 
 
 - name: Update repositories latest postgres
-  yum :
+  yum:
     name: '{{ postgres_url}}'
-   update_cache: yes
+  update_cache: yes
 
 - postgresql_user:
     db: acme
@@ -20,13 +20,12 @@
 
 - name: Dump an existing database to a file (with compression)
   postgresql_db:
-    name: {{item}}
-    state: dump
-  loop: '{{ postgresql_db}}'
+    name: '{{item}}'
+  with_items: '{{ postgresql_db}}'
 
 
 - name: GRANT ALL PRIVILEGES ON SCHEMA public, math TO librarian
   postgresql_privs:
     db: '{{item}}'
     privs: ALL
-  loop: '{{ postgresql_db}}'
+  with_items: '{{ postgresql_db}}'
