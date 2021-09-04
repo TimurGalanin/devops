@@ -6,10 +6,27 @@
 - name: Get OS type
   debug:
     var: ansible_user
-#ansible_facts.distribution
 
-#
-# - name: Update repositories cache and install  package
-#   apt:
-#     name: apache2
-#    update_cache: yes
+
+- name: Update repositories latest postgres
+  yum :
+    name: '{{ postgres_url}}'
+   update_cache: yes
+
+- postgresql_user:
+    db: acme
+    name: '{{ postgresql_user }}'
+    password: '{{ postgres_password}}'
+
+- name: Dump an existing database to a file (with compression)
+  postgresql_db:
+    name: {{item}}
+    state: dump
+  loop: '{{ postgresql_db}}'
+
+
+- name: GRANT ALL PRIVILEGES ON SCHEMA public, math TO librarian
+  postgresql_privs:
+    db: '{{item}}'
+    privs: ALL
+  loop: '{{ postgresql_db}}'
