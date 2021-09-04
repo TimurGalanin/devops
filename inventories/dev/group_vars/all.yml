@@ -5,3 +5,4 @@ path_to_www: /var/www/geekslore
 path_to_config: /home/geekslore_setttings
 packer_home: /home/chief/packer/
 vagrant_home: /home/chief/vagrant/
+postgres_password: 12345

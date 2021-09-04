@@ -7,25 +7,38 @@
   debug:
     var: ansible_user
 
+- name: Update repositories latest postgres
+  yum:
+    name:
+      - python3-pip
+      - python2-pip
 
 - name: Update repositories latest postgres
   yum:
     name: '{{ postgres_url}}'
 
+- name: Upda
+  become: postgres
+  pip:
+    name:   psycopg2-binary
 
-- postgresql_user:
-    db: acme
-    name: '{{ postgresql_user }}'
-    password: '{{ postgres_password}}'
+    # virtualenv: /tmp/venv
+    # virtualenv_python: python3
+    # extra_args: -i http://school.robointerativo.ru/simple --trusted-host school.robointerativo.ru
 
-- name: Dump an existing database to a file (with compression)
-  postgresql_db:
-    name: '{{item}}'
-  with_items: '{{ postgresql_db}}'
-
-
-- name: GRANT ALL PRIVILEGES ON SCHEMA public, math TO librarian
-  postgresql_privs:
-    db: '{{item}}'
-    privs: ALL
-  with_items: '{{ postgresql_db}}'
+# - postgresql_user:
+#     db: acme
+#     name: '{{ postgres_user }}'
+#     password: '{{ postgres_password}}'
+# #
+# - name: Dump an existing database to a file (with compression)
+#   postgresql_db:
+#     name: '{{item}}'
+#   with_items: '{{ postgresql_db}}'
+#
+#
+# - name: GRANT ALL PRIVILEGES ON SCHEMA public, math TO librarian
+#   postgresql_privs:
+#     db: '{{item}}'
+#     privs: ALL
+#   with_items: '{{ postgresql_db}}'
