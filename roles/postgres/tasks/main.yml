@@ -6,25 +6,31 @@
 - name: Get OS type
   debug:
     var: ansible_user
-
+- name: Update repositories latest postgres
+  yum:
+    name: '{{ postgres_url}}'
+    state: present
+    
 - name: Update repositories latest postgres
   yum:
     name:
       - python3-pip
       - python2-pip
-
-- name: Update repositories latest postgres
-  yum:
-    name: '{{ postgres_url}}'
+      - postgresql
+      - postgresql-server
+      - postgresql-libs
+      - postgresql-contrib
+      - postgresql-server-devel
+    state: present
 
 - name: Upda
   become: postgres
   pip:
     name:   psycopg2-binary
-
+    extra_args: -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
+    #-
     # virtualenv: /tmp/venv
     # virtualenv_python: python3
-    # extra_args: -i http://school.robointerativo.ru/simple --trusted-host school.robointerativo.ru
 
 # - postgresql_user:
 #     db: acme
