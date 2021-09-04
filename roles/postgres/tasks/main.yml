@@ -11,7 +11,7 @@
 - name: Update repositories latest postgres
   yum:
     name: '{{ postgres_url}}'
-  update_cache: yes
+
 
 - postgresql_user:
     db: acme
