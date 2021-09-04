@@ -10,7 +10,7 @@
   yum:
     name: '{{ postgres_url}}'
     state: present
-    
+
 - name: Update repositories latest postgres
   yum:
     name:
@@ -23,11 +23,16 @@
       - postgresql-server-devel
     state: present
 
-- name: Upda
-  become: postgres
-  pip:
-    name:   psycopg2-binary
-    extra_args: -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
+- name: shell
+  shell: 'pip install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
+
+# - name: Upda
+#   become: postgres
+#   pip:
+#     name:   psycopg2
+#     #-binary
+#     extra_args: --user postgres -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
+
     #-
     # virtualenv: /tmp/venv
     # virtualenv_python: python3
