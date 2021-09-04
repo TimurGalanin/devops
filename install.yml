@@ -1,0 +1,9 @@
+---
+- hosts: web
+  gather_facts: yes
+  roles:
+    - { role: postgres }
+# - hosts: web
+#   tasks:
+#   - name: Update repositories cache and install  package
+#     ping:

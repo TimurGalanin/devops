@@ -1,0 +1,11 @@
+[all]
+#localhost              ansible_connection=local
+
+[web]
+178.62.244.249
+
+[vagrant]
+localhost ansible_port=1122
+
+[vagrant_not_secure]
+#localhost ansible_port=2222 ansible_user=vagrant ansible_password=vagrant ansible_become_password=vagrant
