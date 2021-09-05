@@ -12,11 +12,15 @@
     state: present
     disable_gpg_check: yes
 
-- name: shell
+- name: disable dnf module and clean cache
   shell: |
+    echo  dnf -qy module disable postgresql
     dnf -qy module disable postgresql
+    echo   dnf clean all
     dnf clean all
+    echo yum makecache -y
     yum makecache -y
+
 
 - name: Update repositories latest postgres
   dnf:
@@ -28,7 +32,7 @@
     disable_gpg_check: yes
 
 - name: Update repositories latest postgres
-  yum:
+  dnf:
     name:
      - python2-devel
      - python3-devel
@@ -38,17 +42,42 @@
      - libpq-devel
     state: present
 
-- name: Create a symbolic link
+
+
+- name: Create a symbolic link pg_config
   file:
     src: /usr/pgsql-13/bin/pg_config
     dest: /bin/pg_config
     state: link
+- name: count files in /var/lib/pgsql/13/data/
+  shell: "ls  /var/lib/pgsql/13/data/ |wc|awk '{print $1}'"
+  register: count_pg
+- name: debug
+  debug:
+    var: count_pg
 
-- name: Create a symbolic link
-  file:
-    src: /usr/pgsql-13/bin/pg_config
-    dest: //bin/pg_config
-    state: link
+- name: test
+  debug:
+    msg: "Empty folder. Init db"
+  when: count_pg.stdout=='0'
+
+- name: test2
+  debug:
+    msg: "Dir not Empty Init db passed"
+  when: count_pg.stdout!='0'
+
+- name: init_db
+  shell: postgresql-13-setup initdb
+  when: count_pg.stdout=='0'
+
+
+#
+# - name: Enable a postgresql.service
+#   systemd:
+#     name: postgresql-13.service
+#     state: started
+#     enabled: yes
+
 #     update_cache: yes
 #       # - postgresql
 #       - postgresql11-server
@@ -76,10 +105,12 @@
     # virtualenv: /tmp/venv
     # virtualenv_python: python3
 
-- postgresql_user:
-    # db: acme
-    name: '{{ postgres_user }}'
-    password: '{{ postgres_password}}'
+# - postgresql_user:
+#     # db: acme
+#     name: '{{ postgres_user }}'
+#     password: '{{ postgres_password}}'
+#
+#   become: postgres
 # #
 # - name: Dump an existing database to a file (with compression)
 #   postgresql_db:
