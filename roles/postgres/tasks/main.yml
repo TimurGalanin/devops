@@ -42,7 +42,13 @@
   file:
     src: /usr/pgsql-13/bin/pg_config
     dest: /bin/pg_config
+    state: link
 
+- name: Create a symbolic link
+  file:
+    src: /usr/pgsql-13/bin/pg_config
+    dest: //bin/pg_config
+    state: link
 #     update_cache: yes
 #       # - postgresql
 #       - postgresql11-server
@@ -58,20 +64,22 @@
 # - name: shell
 #   shell: 'pip2 install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
 
-- name: Upda
-  become: postgres
-  pip:
-    name:   psycopg2-binary
-    extra_args: -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
-    virtualenv_python: python2
+
+
+# - name: Upda2
+#   become: postgres
+#   pip:
+#     name:   psycopg2-binary
+#     extra_args: --pg-config /usr/bin/pg_config -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
+#     executable: /usr/bin/pip2
     #-
     # virtualenv: /tmp/venv
     # virtualenv_python: python3
 
-# - postgresql_user:
-#     db: acme
-#     name: '{{ postgres_user }}'
-#     password: '{{ postgres_password}}'
+- postgresql_user:
+    # db: acme
+    name: '{{ postgres_user }}'
+    password: '{{ postgres_password}}'
 # #
 # - name: Dump an existing database to a file (with compression)
 #   postgresql_db:
