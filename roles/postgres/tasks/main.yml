@@ -7,39 +7,55 @@
   debug:
     var: ansible_user
 - name: Update repositories latest postgres
-  yum:
+  dnf:
     name: '{{ postgres_url}}'
     state: present
+    disable_gpg_check: yes
+
+- name: shell
+  shell: |
+    dnf -qy module disable postgresql
+    dnf clean all
+    yum makecache -y
+
+- name: Update repositories latest postgres
+  dnf:
+    name:
+      - postgresql13-server
+      - postgresql13-devel
+      - postgresql13-contrib
+    state: present
+    disable_gpg_check: yes
 
 - name: Update repositories latest postgres
   yum:
     name:
-      - python3-pip
-      - python2-pip
-      # - postgresql
-      - postgresql11-server
-      - postgresql11-server-dev
-     #  - postgresql-server
-     #  - postgresql-libs
-     # - postgresql-contrib
-     #  - postgresql-devel
+     - python3-pip
+     - python2-pip
+     - libpq
+     - libpq-devel
     state: present
-    update_cache: yes
-
+#     update_cache: yes
+#       # - postgresql
+#       - postgresql11-server
+#       - postgresql11-server-dev
+#      #  - postgresql-server
+#      #  - postgresql-libs
+#      # - postgresql-contrib
+#      #  - postgresql-devel
       # - postgresql11-server
           # - postgresql10
           # - postgresql10-server
 
-- name: shell
-  shell: 'pip2 install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
+# - name: shell
+#   shell: 'pip2 install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
 
-# - name: Upda
-#   become: postgres
-#   pip:
-#     name:   psycopg2
-#     #-binary
-#     extra_args: --user postgres -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
-
+- name: Upda
+  become: postgres
+  pip:
+    name:   psycopg2-binary
+    extra_args: -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru
+    virtualenv_python: python2
     #-
     # virtualenv: /tmp/venv
     # virtualenv_python: python3
