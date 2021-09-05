@@ -37,6 +37,12 @@
      - libpq
      - libpq-devel
     state: present
+
+- name: Create a symbolic link
+  file:
+    src: /usr/pgsql-13/bin/pg_config
+    dest: /bin/pg_config
+
 #     update_cache: yes
 #       # - postgresql
 #       - postgresql11-server
