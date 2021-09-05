@@ -16,15 +16,22 @@
     name:
       - python3-pip
       - python2-pip
-      - postgresql
-      - postgresql-server
-      - postgresql-libs
-      - postgresql-contrib
-      - postgresql-server-devel
+      # - postgresql
+      - postgresql11-server
+      - postgresql11-server-dev
+     #  - postgresql-server
+     #  - postgresql-libs
+     # - postgresql-contrib
+     #  - postgresql-devel
     state: present
+    update_cache: yes
+
+      # - postgresql11-server
+          # - postgresql10
+          # - postgresql10-server
 
 - name: shell
-  shell: 'pip install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
+  shell: 'pip2 install psycopg2-binary -i http://pip.robointerativo.ru/simple --trusted-host pip.robointerativo.ru'
 
 # - name: Upda
 #   become: postgres

@@ -2,8 +2,7 @@
 #localhost              ansible_connection=local
 
 [web]
-178.62.244.249
-
+161.35.148.149
 [vagrant]
 localhost ansible_port=1122
 
